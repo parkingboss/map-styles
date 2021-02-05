@@ -25,9 +25,7 @@
     },
     "property": {
       "type": "geojson",
-      "buffer": 256,
-      "attribution": "Parking Boss",
-      "data": {"type": "FeatureCollection", "features": []}
+      "data": "https://maps.smartamenity.app/cartoengine/?level=2&property=95n6f1jgb52d30hg2xdmepdj0g&valid=2021-02-04T00:00:00-08:00/"
     }
   },
   "sprite": "mapbox://sprites/parkingboss/ck2m0s5e300dr1cmxu1sacwlu/bql6fy01ivh9tlf64dsg1tb35",
@@ -3363,7 +3361,7 @@
       "source": "property",
       "minzoom": 16.5,
       "filter": ["match", ["get", "landuse"], ["residential"], true, false],
-      "layout": {},
+      "layout": {"visibility": "visible"},
       "paint": {
         "fill-color": [
           "interpolate",
@@ -3444,7 +3442,7 @@
       "id": "patio",
       "type": "fill",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 0,
       "filter": ["match", ["get", "leisure"], ["outdoor_seating"], true, false],
       "layout": {},
       "paint": {
@@ -3456,7 +3454,7 @@
       "id": "pb surface",
       "type": "fill",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 16,
       "filter": ["match", ["get", "surface"], ["paved"], true, false],
       "layout": {},
       "paint": {
@@ -3909,7 +3907,7 @@
       "paint": {"icon-opacity": 0.3}
     },
     {
-      "id": "pb parking space permitted complete",
+      "id": "parking space basic",
       "type": "fill",
       "source": "property",
       "minzoom": 17,
@@ -3919,19 +3917,77 @@
         ["==", "$type", "Polygon"]
       ],
       "layout": {},
-      "paint": {"fill-color": "#000000", "fill-opacity": 1}
+      "paint": {"fill-opacity": 1, "fill-color": "#e6e6e6"}
     },
     {
-      "id": "pb parking space-all",
+      "id": "parking space unpermitted",
       "type": "fill",
       "source": "property",
       "minzoom": 17,
       "filter": [
         "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["!has", "permit"],
+        ["==", "access", "permit"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#bdddac"}
+    },
+    {
+      "id": "parking space permitted",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["==", "permit", "yes"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#e5b8be"}
+    },
+    {
+      "id": "parking space permitted partial",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["==", "permit:unit", "yes"],
+        ["!has", "permit:vehicle"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#FFEC9F"}
+    },
+    {
+      "id": "parking space visitor",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["==", "parking_space", "visitor"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#3a8457"}
+    },
+    {
+      "id": "parking space-all",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 14,
+      "filter": [
+        "all",
         ["match", ["get", "amenity"], ["parking_space"], true, false],
         ["match", ["geometry-type"], ["Polygon"], true, false]
       ],
-      "layout": {},
+      "layout": {"visibility": "none"},
       "paint": {
         "fill-color": [
           "case",
@@ -4274,6 +4330,19 @@
       }
     },
     {
+      "id": "service",
+      "type": "symbol",
+      "source": "property",
+      "minzoom": 15,
+      "filter": ["match", ["get", "building"], ["service"], true, false],
+      "layout": {
+        "icon-image": "maintenance-icon-2",
+        "icon-size": ["interpolate", ["linear"], ["zoom"], 17, 0, 20, 0.4],
+        "text-field": ["to-string", ["get", "name"]]
+      },
+      "paint": {"icon-opacity": 0.3}
+    },
+    {
       "id": "ADA",
       "type": "symbol",
       "source": "property",
@@ -4372,23 +4441,10 @@
       }
     },
     {
-      "id": "service",
-      "type": "symbol",
-      "source": "property",
-      "minzoom": 17,
-      "filter": ["match", ["get", "building"], ["service"], true, false],
-      "layout": {
-        "icon-image": "maintenance-icon-2",
-        "icon-size": ["interpolate", ["linear"], ["zoom"], 17, 0, 20, 0.4],
-        "text-field": ["to-string", ["get", "name"]]
-      },
-      "paint": {"icon-opacity": 0.3}
-    },
-    {
       "id": "gate",
       "type": "line",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 15,
       "filter": ["match", ["get", "barrier"], ["gate"], true, false],
       "layout": {},
       "paint": {"line-gap-width": 2, "line-color": "#cc1800"}
