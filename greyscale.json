@@ -25,7 +25,7 @@
     },
     "property": {
       "type": "geojson",
-      "data": "https://maps.smartamenity.app/cartoengine/?level=2&property=95n6f1jgb52d30hg2xdmepdj0g&valid=2021-02-04T00:00:00-08:00/"
+      "data": "https://maps.smartamenity.app/cartoengine/?level=1&property=95n6f1jgb52d30hg2xdmepdj0g&valid=2021-02-04T00:00:00-08:00/"
     }
   },
   "sprite": "mapbox://sprites/parkingboss/ck2m0s5e300dr1cmxu1sacwlu/bql6fy01ivh9tlf64dsg1tb35",
@@ -3938,7 +3938,7 @@
       "id": "parking space permitted",
       "type": "fill",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 16,
       "filter": [
         "all",
         ["==", "amenity", "parking_space"],
@@ -3960,8 +3960,39 @@
         ["==", "permit:unit", "yes"],
         ["!has", "permit:vehicle"]
       ],
-      "layout": {},
+      "layout": {"visibility": "visible"},
       "paint": {"fill-opacity": 1, "fill-color": "#FFEC9F"}
+    },
+    {
+      "id": "parking space fee permitted",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 16,
+      "filter": [
+        "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["==", "permit", "yes"],
+        ["has", "fee"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#e5b8be"}
+    },
+    {
+      "id": "parking space fee unpermitted",
+      "type": "fill",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "amenity", "parking_space"],
+        ["==", "$type", "Polygon"],
+        ["!has", "permit"],
+        ["==", "access", "permit"],
+        ["has", "fee"]
+      ],
+      "layout": {},
+      "paint": {"fill-opacity": 1, "fill-color": "#bdddac"}
     },
     {
       "id": "parking space visitor",
@@ -4004,6 +4035,109 @@
           "#e6e6e6"
         ],
         "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.5, 1]
+      }
+    },
+    {
+      "id": "parking space label",
+      "type": "symbol",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "$type", "LineString"],
+        ["has", "name"],
+        ["==", "amenity", "parking_space"]
+      ],
+      "layout": {
+        "text-size": 16,
+        "text-allow-overlap": true,
+        "text-variable-anchor": ["center"],
+        "text-transform": "uppercase",
+        "text-font": ["Roboto Medium"],
+        "symbol-placement": "line-center",
+        "text-padding": 0,
+        "text-rotation-alignment": "map",
+        "text-field": ["get", "name"],
+        "text-letter-spacing": 0,
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-halo-color": [
+          "case",
+          ["match", ["get", "access"], ["", "customer"], true, false],
+          "hsl(0, 0%, 100%)",
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          "hsla(0, 0%, 100%, 0)",
+          "hsl(0, 0%, 100%)"
+        ],
+        "text-halo-width": [
+          "case",
+          ["match", ["get", "access"], ["customer"], true, false],
+          1,
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          0,
+          1
+        ],
+        "text-color": [
+          "case",
+          ["match", ["get", "access"], ["customer"], true, false],
+          "#000",
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          "#fff",
+          "#000"
+        ]
+      }
+    },
+    {
+      "id": "parking space charge",
+      "type": "symbol",
+      "source": "property",
+      "minzoom": 17,
+      "filter": [
+        "all",
+        ["==", "$type", "LineString"],
+        ["has", "name"],
+        ["==", "amenity", "parking_space"],
+        ["has", "charge"]
+      ],
+      "layout": {
+        "text-size": 16,
+        "text-allow-overlap": true,
+        "text-variable-anchor": ["center"],
+        "text-transform": "uppercase",
+        "text-font": ["Roboto Medium"],
+        "symbol-placement": "line-center",
+        "text-padding": 0,
+        "text-rotation-alignment": "map",
+        "text-field": {"type": "identity", "property": "charge"},
+        "text-letter-spacing": 0,
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-halo-color": [
+          "case",
+          ["match", ["get", "access"], ["", "customer"], true, false],
+          "hsl(0, 0%, 100%)",
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          "hsla(0, 0%, 100%, 0)",
+          "hsl(0, 0%, 100%)"
+        ],
+        "text-halo-width": [
+          "case",
+          ["match", ["get", "access"], ["customer"], true, false],
+          1,
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          0,
+          1
+        ],
+        "text-color": [
+          "case",
+          ["match", ["get", "access"], ["customer"], true, false],
+          "#000",
+          ["match", ["get", "parking_space"], ["visitor"], true, false],
+          "#fff",
+          "#000"
+        ]
       }
     },
     {
@@ -4060,80 +4194,6 @@
       },
       "paint": {
         "icon-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.5, 1]
-      }
-    },
-    {
-      "id": "space-label",
-      "type": "symbol",
-      "source": "property",
-      "minzoom": 17,
-      "filter": [
-        "all",
-        ["match", ["geometry-type"], ["LineString"], true, false],
-        ["match", ["get", "amenity"], ["parking_space"], true, false],
-        ["has", "name"]
-      ],
-      "layout": {
-        "text-size": [
-          "interpolate",
-          ["exponential", 1],
-          ["zoom"],
-          17,
-          1,
-          22,
-          ["match", ["get", "access"], ["customer"], 14, 18]
-        ],
-        "text-allow-overlap": true,
-        "text-variable-anchor": ["center"],
-        "text-transform": "uppercase",
-        "text-font": [
-          "Van Condensed Pro ID Regular",
-          "Arial Unicode MS Regular"
-        ],
-        "symbol-placement": "line-center",
-        "text-padding": 0,
-        "text-rotation-alignment": "map",
-        "text-field": ["to-string", ["get", "name"]],
-        "text-letter-spacing": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          0,
-          [
-            "match",
-            ["get", "parking_space"],
-            ["visitor", "staff"],
-            true,
-            false
-          ],
-          0,
-          0.0625
-        ]
-      },
-      "paint": {
-        "text-halo-color": [
-          "case",
-          ["match", ["get", "access"], ["", "customer"], true, false],
-          "hsl(0, 0%, 100%)",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "hsla(0, 0%, 100%, 0)",
-          "hsl(0, 0%, 100%)"
-        ],
-        "text-halo-width": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          1,
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          0,
-          1
-        ],
-        "text-color": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          "#000",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "#fff",
-          "#000"
-        ]
       }
     },
     {
