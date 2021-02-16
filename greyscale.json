@@ -3524,7 +3524,7 @@
           ["to-string", ["get", "name"]],
           ["to-string", ["get", "name"]]
         ],
-        "text-font": ["Roboto Black", "Arial Unicode MS Regular"],
+        "text-font": ["Roboto Condensed Regular"],
         "text-transform": "uppercase",
         "text-size": ["interpolate", ["linear"], ["zoom"], 16, 0, 20, 32],
         "icon-image": [
@@ -4041,7 +4041,7 @@
       "id": "parking space label",
       "type": "symbol",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 16,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
@@ -4053,13 +4053,14 @@
         "text-allow-overlap": true,
         "text-variable-anchor": ["center"],
         "text-transform": "uppercase",
-        "text-font": ["Roboto Medium"],
+        "text-font": ["Roboto Condensed Regular"],
         "symbol-placement": "line-center",
         "text-padding": 0,
         "text-rotation-alignment": "map",
-        "text-field": ["get", "name"],
+        "text-field": {"type": "identity", "property": "name"},
         "text-letter-spacing": 0,
-        "visibility": "visible"
+        "visibility": "visible",
+        "text-line-height": 1
       },
       "paint": {
         "text-halo-color": [
@@ -4105,13 +4106,14 @@
         "text-allow-overlap": true,
         "text-variable-anchor": ["center"],
         "text-transform": "uppercase",
-        "text-font": ["Roboto Medium"],
+        "text-font": ["Roboto Condensed Regular"],
         "symbol-placement": "line-center",
         "text-padding": 0,
         "text-rotation-alignment": "map",
         "text-field": {"type": "identity", "property": "charge"},
         "text-letter-spacing": 0,
-        "visibility": "visible"
+        "visibility": "visible",
+        "text-line-height": 1
       },
       "paint": {
         "text-halo-color": [
