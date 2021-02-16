@@ -4053,51 +4053,29 @@
         "text-allow-overlap": true,
         "text-variable-anchor": ["center"],
         "text-transform": "uppercase",
-        "text-font": ["Roboto Condensed Regular"],
+        "text-font": ["Roboto Condensed Medium"],
         "symbol-placement": "line-center",
         "text-padding": 0,
         "text-rotation-alignment": "map",
-        "text-field": {"type": "identity", "property": "name"},
+        "text-field": ["get", "name"],
         "text-letter-spacing": 0,
         "visibility": "visible",
         "text-line-height": 1
       },
       "paint": {
-        "text-halo-color": [
-          "case",
-          ["match", ["get", "access"], ["", "customer"], true, false],
-          "hsl(0, 0%, 100%)",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "hsla(0, 0%, 100%, 0)",
-          "hsl(0, 0%, 100%)"
-        ],
-        "text-halo-width": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          1,
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          0,
-          1
-        ],
-        "text-color": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          "#000",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "#fff",
-          "#000"
-        ]
+        "text-halo-color": "#fff",
+        "text-halo-width": 1,
+        "text-color": "#000000"
       }
     },
     {
       "id": "parking space charge",
       "type": "symbol",
       "source": "property",
-      "minzoom": 17,
+      "minzoom": 16,
       "filter": [
         "all",
         ["==", "$type", "LineString"],
-        ["has", "name"],
         ["==", "amenity", "parking_space"],
         ["has", "charge"]
       ],
@@ -4110,36 +4088,15 @@
         "symbol-placement": "line-center",
         "text-padding": 0,
         "text-rotation-alignment": "map",
-        "text-field": {"type": "identity", "property": "charge"},
+        "text-field": ["get", "charge"],
         "text-letter-spacing": 0,
         "visibility": "visible",
         "text-line-height": 1
       },
       "paint": {
-        "text-halo-color": [
-          "case",
-          ["match", ["get", "access"], ["", "customer"], true, false],
-          "hsl(0, 0%, 100%)",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "hsla(0, 0%, 100%, 0)",
-          "hsl(0, 0%, 100%)"
-        ],
-        "text-halo-width": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          1,
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          0,
-          1
-        ],
-        "text-color": [
-          "case",
-          ["match", ["get", "access"], ["customer"], true, false],
-          "#000",
-          ["match", ["get", "parking_space"], ["visitor"], true, false],
-          "#fff",
-          "#000"
-        ]
+        "text-halo-color": "#fff",
+        "text-halo-width": 1,
+        "text-color": "#000000"
       }
     },
     {
