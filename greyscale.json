@@ -4053,7 +4053,7 @@
         "text-allow-overlap": true,
         "text-variable-anchor": ["center"],
         "text-transform": "uppercase",
-        "text-font": ["Roboto Condensed Medium"],
+        "text-font": ["Roboto Condensed Bold"],
         "symbol-placement": "line-center",
         "text-padding": 0,
         "text-rotation-alignment": "map",
